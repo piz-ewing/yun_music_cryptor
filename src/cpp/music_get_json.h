@@ -10,6 +10,9 @@ public:
 
 public:
     auto get_json(std::string packet_body) {
+        if (packet_body.empty())
+            return packet_body;
+
         auto r = cpr::Post(cpr::Url{ "https://music.163.com/weapi/song/enhance/player/url/v1?csrf_token=" },
             cpr::Body{ packet_body },
             cpr::Header{ {"Content-Type", "application/x-www-form-urlencoded"},{"Connection", "close"} });

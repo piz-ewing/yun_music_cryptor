@@ -35,8 +35,16 @@ public:
 
 public:
 
-    auto aes_encrypt(std::string s, std::string k = "0CoJUm6Qyw8W8jud", std::string iv = "0102030405060708") {
+    auto aes_encrypt(std::string s, std::string k = std::string(), std::string iv = std::string()) {
         std::string cipher_text;
+
+        if (k.empty()) {
+            k = "0CoJUm6Qyw8W8jud";
+        }
+
+        if (iv.empty()) {
+            iv = "0102030405060708";
+        }
 
         CryptoPP::CBC_Mode<CryptoPP::AES>::Encryption cbc_enc(reinterpret_cast<const std::uint8_t*>(k.data()), k.length(), reinterpret_cast<const std::uint8_t*>(iv.data()));
 
@@ -50,11 +58,14 @@ public:
         return cipher_text;
     }
 
-    auto rsa_encrypt(std::string p, std::string e = "", std::string m = "") {
-        if (e.empty())
+    auto rsa_encrypt(std::string p, std::string e = std::string(), std::string m = std::string()) {
+        if (e.empty()) {
             e = default_e;
-        if (m.empty())
+        }
+
+        if (m.empty()) {
             m = default_m;
+        }
 
         std::string ps = "0x";
         std::reverse(p.begin(), p.end());
@@ -77,20 +88,27 @@ public:
         return CryptoPP::IntToString(pubKey.ApplyFunction(pi), 16);
     }
 
-    auto paket_body(std::string id, std::string k = "") {
+    auto paket_body(std::string id, std::string k = std::string()) {
+        std::string pkg;
         auto enc_text = "{\"ids\":\"[" +
             id +
             "]\",\"level\":\"standard\",\"encodeType\":\"mp3\",\"csrf_token\":\"\"}";
 
-        if (!k.empty())
+        if (!k.empty()) {
             rsa_p = k;
-
-        enc_text = aes_encrypt(enc_text);
-        enc_text = aes_encrypt(enc_text, rsa_p);
-        auto enc_sec_key = rsa_encrypt(rsa_p);
-
-        return "params=" + cpr::util::urlEncode(enc_text) +
-            "&encSecKey=" + enc_sec_key;
+        }
+        try {
+            enc_text = aes_encrypt(enc_text);
+            enc_text = aes_encrypt(enc_text, rsa_p);
+            auto enc_sec_key = rsa_encrypt(rsa_p);
+            pkg = "params=" + cpr::util::urlEncode(enc_text) +
+                "&encSecKey=" + enc_sec_key;
+        }
+        catch(...){
+            // 
+            return std::string();
+        }
+        return  pkg;
     }
 
 private:
