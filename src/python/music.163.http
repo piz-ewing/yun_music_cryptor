@@ -1,0 +1,40 @@
+POST https://music.163.com/weapi/song/enhance/player/url/v1?csrf_token= HTTP/1.1
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+
+params=5kdz8Ac2tegxCtGR6IYDMo8U55FfcYyYC1WQtyo3REoUZBAjE0i21NSxNrFG7nhzZ8QjeciSCUMtCbIj4iKvscA33xbPrQxZpOKdHp7fSANgAvVl7ObP51DbEE/ByVvSsHNsplbFNx1CXCsx177lGw%3D%3D&encSecKey=cb20568a185cc52cf0999210d827d36a0959ebeb5cd04e029c8127198db1823147ca0be23639b0bfb6e77b346fc4740afbc6b6e405985de67ce9bc158bc2c95c03ece40a6dced709ffc3d1a0776377f2e85a201d6112608c3437618bf8b9fc0542c419111653f440e3cf869566a2e7e31548e65e86c59ded5c1f38ca40a9a9ec
+###
+
+
+网易云 加密记录
+
+1. 生成params
+{"ids":"[28949499]","level":"standard","encodeType":"aac","csrf_token":""}
+0CoJUm6Qyw8W8jud
+0102030405060708
+// AES CBC pkcs5padding 128bit base64
+====
+
+g1N6YybxFdV98P/fGY0407hwjh0evx5kPtxXR0nPd/WPPFsi9Lf67vFfjUnM3MDahHpqkyZMS+9goaszbHF+i1fIufNBu+8BbSvBCJSVfEU=
+// 随机16字节串
+GR1dIlooUjX3zmY1
+
+// AES CBC pkcs5padding 128bit base64
+====
+9R0jh8yE6/JTTwoH4ujCacPMOwJdbXk39BlG3ODTNe+rHMLAOSHDlp/Mza7+15lOi8bvPMtLnA6gCOujDj5iuVBJF2a2DJVkNLtrTtgl+AXpsR5hSh0+EOfuads7lq41B9EpYKktwB72zOy+kafalQ==
+
+// url_enc => params
+====
+9R0jh8yE6%2fJTTwoH4ujCacPMOwJdbXk39BlG3ODTNe%2brHMLAOSHDlp%2fMza7%2b15lOi8bvPMtLnA6gCOujDj5iuVBJF2a2DJVkNLtrTtgl%2bAXpsR5hSh0%2bEOfuads7lq41B9EpYKktwB72zOy%2bkafalQ%3d%3d
+
+
+2.使用RSA加密AES KEY
+// 随机16字节串，与上面一致
+GR1dIlooUjX3zmY1
+010001
+00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7
+
+====
+// p[::-1]
+// c=[p^e]%m => encSecKey
+abc2e11cd93268085180aace6208c0caed01b7c2af641999a79adf362fb778a3fba5117f9c06541a5620d4dccd628085b53c1b22d971068a458e1ac16d831860ab2f1da4c7c8342f8bb815c6ab6c6c335cc797a4273124ff4846c9d58b0015691f933323fe080b8d026836880af99e918c7ace1813356b8bc327a52dcc24050a
